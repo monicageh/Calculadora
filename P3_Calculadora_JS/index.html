@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calculadora de CORE</title>
+        <meta charset="utf-8">
+        <script type="text/javascript">
+
+            //Variables Globales
+            let operator = "";
+            let aux = 0;
+
+            document.addEventListener('click', ev => {
+                if (ev.target.matches('.suma')) add();
+                else if(ev.target.matches('.resta')) sub();
+                else if(ev.target.matches('.multiplicacion')) mul();
+                else if(ev.target.matches('.division')) div();
+                else if(ev.target.matches('.igual')) eq();
+                else if(ev.target.matches('.cuadrado')) sq();
+                else if(ev.target.matches('.factorial')) fact();
+            })
+
+            //Vaciar barra input
+            const vaciar = () => {
+                document.getElementById("pantalla").value = "";
+                document.getElementById("info").innerHTML = "Info sobre el número"
+            }
+
+            //Rellena info sobre el número
+            const rellenar_info = () => {
+                let num = document.getElementById("pantalla");
+                if (num.value < 100) {
+                    document.getElementById("info").innerHTML = "Info: El resultado es menor que 100";
+                }
+                else if (num.value >= 100 && num.value <= 200){
+    		        document.getElementById("info").innerHTML = "Info: El resultado está entre 100 y 200";    		
+    	        }
+                else if (num.value > 200) {
+    		        document.getElementById("info").innerHTML = "Info: El resultado es superior a 200";    		    		
+    	        }
+                else {
+                    document.getElementById("info").innerHTML = "ERROR: No ha introducido un número"
+                }
+            }
+
+            //Comprobar que es un número
+            const validar = (criterioComa) => {
+                let num = document.getElementById("pantalla");
+                let bool = false;
+                if (criterioComa){
+                    bool = num.value.split(",").map(a => parseFloat(a)).filter(isNaN).length === 0;
+                } else {
+                    bool = !isNaN(num.value);
+                }
+                if (!bool) {
+                    num.value = "Error";
+                }
+                return bool;
+            }
+
+            //Operación cuadrado
+            const sq = () => {
+                if (validar(true)){
+                    let num = document.getElementById("pantalla");
+                    num.value = num.value * num.value;
+                    rellenar_info();
+                }
+            }
+
+            //Operación factorial
+            const fact = () => {               
+                if (validar(true)){
+                    let num = document.getElementById("pantalla");
+                    var factorial = 1;
+                    for (var i=1; i <= num.value; i++){
+                        factorial *= i;
+                    }
+                    num.value = factorial;
+                    rellenar_info();
+                }
+            }
+
+            //Operación suma
+            const add = () => {
+                if (validar(true)){
+                    let num = document.getElementById("pantalla");
+                    aux = num.value;
+                    operator = "+";
+                    vaciar();
+                    rellenar_info();
+                }
+            }
+
+            //Operación resta
+            const sub = () => {
+                if (validar(true)){
+                    let num = document.getElementById("pantalla");
+                    aux = num.value;
+                    operator = "-";
+                    vaciar();
+                    rellenar_info();
+                }
+            }
+
+            //Operación multiplicación
+            const mul = () => {
+                if (validar(true)){
+                    let num = document.getElementById("pantalla");
+                    aux = num.value;
+                    operator = "*";
+                    vaciar();
+                    rellenar_info();
+                }       
+            }
+
+            //Operación división
+            const div = () => {
+                if (validar(true)){
+                    let num = document.getElementById("pantalla");
+                    aux = num.value;
+                    operator = "/";
+                    vaciar();
+                    rellenar_info();
+                }     
+            }
+
+            //Igual (=)
+            const eq = () => {
+               if (validar(true)){
+                    let num = document.getElementById("pantalla");
+                    switch(operator) {
+                    case "+": num.value =  +aux + +num.value; break;
+                    case "-": num.value =  aux - num.value; break;
+                    case "*": num.value =  aux * num.value; break;
+                    case "/": num.value =  aux / num.value; break;
+                    }
+                    rellenar_info()
+                }
+            }
+
+        </script>
+    </head>
+    <body>
+        <header>
+            <h2 class="cabecera">CALCULADORA DE CORE</h2>
+            <input type="text" id="pantalla" onclick="vaciar()">
+        </header>
+        <h2 id="info" class="grande" title="Info sobre el número">Info sobre el número</h2>
+        <section id="opUnitarias">
+            <h4>Operaciones unitarias:</h4>
+            <button id="cuadrado" onclick="sq()">x<sup>2</sup></button>
+            <button id="factorial" onclick="fact()">x!</button>
+        </section>
+        <section id="opBinarias">
+            <h4>Operaciones binarias:</h4>
+            <button id="suma" onclick="add()">+</button>
+            <button id="resta" onclick="sub()">-</button>
+            <button id="multiplicacion" onclick="mul()">*</button>
+            <button id="division" onclick="div()">/</button>
+            <button id="igual" onclick="eq()">=</button>
+        </section>
+        <br>
+    </body>
+    <style>
+        h2.cabecera {
+            color: darkred;
+            font-size: 40px;
+        }
+
+        body {
+            margin: 30px;
+            text-align: center;
+            border: darkred 8px solid;
+            float: none;
+        }
+
+        button {
+            font-size: 20px;
+            height: 35px;
+            width: 35px;
+            border: black 2px solid;
+        }
+
+        input {
+            margin-bottom: 5px;
+            margin-top: 2px;
+            padding: 4px;
+            font-size: 20px;
+            border-color: darkred;
+        }
+
+        h2#info{
+            background-color: darkred;
+            color: white;
+            font-size: 25px;
+        }
+
+        h4 {
+            font-size: 25px;
+        }
+
+        section#opUnitarias h4 {
+            color: rgb(1, 76, 1);
+        }
+
+        section#opBinarias h4 {
+            color: rgb(2, 2, 103);
+        }
+
+        section#opUnitarias {
+            text-align: center;
+            float:none;
+            margin: 20px;
+            border: darkgreen 6px solid;
+            margin: 30px;
+            padding: 15px;
+            background-color:lightgreen;
+        }
+
+        section#opBinarias {
+            text-align: center;
+            float:none;
+            margin: 20px;
+            border: darkblue 6px solid;
+            margin: 30px;
+            padding: 15px;
+            background-color:lightskyblue;
+        }
+    </style>
+</html>
